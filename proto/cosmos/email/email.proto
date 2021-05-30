@@ -1,0 +1,23 @@
+syntax = "proto3";
+package schrsi.demail.email;
+
+option go_package = "github.com/schrsi/d-email/x/email/types";
+
+import "gogoproto/gogo.proto";
+
+message Email {
+  string creator = 1;
+  string id = 2;
+  string from = 3; 
+  string to = 4; 
+  string senderSignature = 5; 
+  uint64 senderAddressVersion = 6; 
+  string subject = 7; 
+  string body = 8; 
+  repeated string attachments = 9; 
+  string replyTo = 10; 
+  repeated string trackIds = 11; 
+  string sendedAt = 12; 
+  repeated string decryptionKeys = 13; 
+  string previousDecryptionKey = 14; 
+}

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package schrsi.demail.address;
+
+option go_package = "github.com/schrsi/d-email/x/address/types";
+
+import "gogoproto/gogo.proto";
+
+message Address {
+  string creator = 1;
+  string name = 2; 
+  string pubKey = 3; 
+  uint64 trackID = 4; 
+  uint64 version = 5;
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package schrsi.demail.address;
+
+import "cosmos/address/address.proto";
+
+option go_package = "github.com/schrsi/d-email/x/address/types";
+
+// GenesisState defines the address module's genesis state.
+message GenesisState {
+		repeated Address addressList = 1; 
+}

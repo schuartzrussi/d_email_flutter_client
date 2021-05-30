@@ -1,0 +1,14 @@
+syntax = "proto3";
+package schrsi.demail.email;
+
+// this line is used by starport scaffolding # genesis/proto/import
+import "cosmos/email/email.proto";
+
+option go_package = "github.com/schrsi/d-email/x/email/types";
+
+// GenesisState defines the email module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+		repeated Email emailList = 1; // this line is used by starport scaffolding # genesis/proto/stateField
+    // this line is used by starport scaffolding # ibc/genesis/proto
+}

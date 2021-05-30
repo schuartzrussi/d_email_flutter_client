@@ -1,0 +1,44 @@
+syntax = "proto3";
+package schrsi.demail.address;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "cosmos/address/address.proto";
+
+option go_package = "github.com/schrsi/d-email/x/address/types";
+
+// Query defines the gRPC querier service.
+service Query {
+	rpc AddressByName(QueryGetAddressByNameRequest) returns (QueryGetAddressResponse) {
+		option (google.api.http).get = "/schrsi/demail/address/address/{name}";
+	}
+	rpc AddressByVersion(QueryGetAddressByVersionRequest) returns (QueryGetAddressResponse) {
+		option (google.api.http).get = "/schrsi/demail/address/address/{name}/{version}";
+	}
+	rpc AddressAll(QueryAllAddressRequest) returns (QueryAllAddressResponse) {
+		option (google.api.http).get = "/schrsi/demail/address/address";
+	}
+
+}
+
+message QueryGetAddressByNameRequest {
+	string name = 1;
+}
+
+message QueryGetAddressByVersionRequest {
+	string name = 1;
+	uint64 version = 2;
+}
+
+message QueryGetAddressResponse {
+	Address Address = 1;
+}
+
+message QueryAllAddressRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAddressResponse {
+	repeated Address Address = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

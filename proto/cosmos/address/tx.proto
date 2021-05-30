@@ -1,0 +1,30 @@
+syntax = "proto3";
+package schrsi.demail.address;
+
+option go_package = "github.com/schrsi/d-email/x/address/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc CreateAddress(MsgCreateAddress) returns (MsgCreateAddressResponse);
+  rpc UpdateAddress(MsgUpdateAddress) returns (MsgUpdateAddressResponse);
+}
+
+message MsgCreateAddress {
+  string creator = 1;
+  string name = 2;
+  string pubKey = 3;
+}
+
+message MsgCreateAddressResponse {
+  uint64 trackID = 1;  
+}
+
+message MsgUpdateAddress {
+  string creator = 1;
+  string name = 2;
+  string pubKey = 3;
+}
+
+message MsgUpdateAddressResponse { 
+  uint64 version = 1;
+}

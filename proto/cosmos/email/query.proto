@@ -1,0 +1,36 @@
+syntax = "proto3";
+package schrsi.demail.email;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "cosmos/email/email.proto";
+
+option go_package = "github.com/schrsi/d-email/x/email/types";
+
+// Query defines the gRPC querier service.
+service Query {
+	rpc EmailById(QueryGetEmailByIdRequest) returns (QueryGetEmailResponse) {
+		option (google.api.http).get = "/schrsi/demail/email/email/{id}";
+	}
+	rpc EmailAll(QueryAllEmailRequest) returns (QueryAllEmailResponse) {
+		option (google.api.http).get = "/schrsi/demail/email/email";
+	}
+
+}
+
+message QueryGetEmailByIdRequest {
+	string id = 1;
+}
+
+message QueryGetEmailResponse {
+	Email Email = 1;
+}
+
+message QueryAllEmailRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllEmailResponse {
+	repeated Email Email = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

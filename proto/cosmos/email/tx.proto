@@ -1,0 +1,29 @@
+syntax = "proto3";
+package schrsi.demail.email;
+
+option go_package = "github.com/schrsi/d-email/x/email/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc CreateEmail(MsgCreateEmail) returns (MsgCreateEmailResponse);
+}
+
+message MsgCreateEmail {
+  string creator = 1;
+  string from = 2;
+  string to = 3;
+  string senderSignature = 4;
+  uint64 senderAddressVersion = 5;
+  string subject = 6;
+  string body = 7;
+  repeated string attachments = 8;
+  string replyTo = 9;
+  repeated string trackIds = 10;
+  string sendedAt = 11;
+  repeated string decryptionKeys = 12;
+  string previousDecryptionKey = 13;
+}
+
+message MsgCreateEmailResponse {
+  string id = 1;
+}

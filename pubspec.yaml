@@ -28,10 +28,20 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  flutter_bloc: ^7.0.1
+  alan: ^0.40.2+1
+  hive: ^2.0.4
+  path_provider: ^2.0.2
+  dev: ^0.0.2
+  fast_rsa: ^2.0.1
+  sn_progress_dialog: ^1.0.2
+  rsa_encrypt: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  hive_generator: ^1.1.0
+  build_runner: ^2.0.4 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -43,6 +53,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/images/logo-furb.gif
 
   # To add assets to your application, add an assets section, like this:
   # assets:
