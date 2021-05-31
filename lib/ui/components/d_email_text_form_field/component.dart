@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 
 class DEmailTextFormField extends StatelessWidget {
   final String label;
-  final TextInputType textInputType;
+  final int? maxLines;
+  final TextInputType? textInputType;
   final bool obscureText;
+  final TextInputAction? textInputAction;
   final TextEditingController textEditingController;
   final FormFieldValidator<String>? validator;
 
   const DEmailTextFormField(
       {Key? key,
       required this.label,
-      required this.textInputType,
+      this.textInputType,
       required this.obscureText,
       required this.textEditingController,
-      this.validator})
+      this.validator,
+      this.maxLines = 1,
+      this.textInputAction})
       : super(key: key);
 
   @override
@@ -21,6 +25,7 @@ class DEmailTextFormField extends StatelessWidget {
     return TextFormField(
         obscureText: this.obscureText,
         validator: this.validator,
+        maxLines: this.maxLines,
         controller: this.textEditingController,
         decoration: InputDecoration(
             alignLabelWithHint: true,
@@ -33,6 +38,6 @@ class DEmailTextFormField extends StatelessWidget {
                 borderSide: BorderSide(
                     color: Theme.of(context).primaryColor, width: 1.0),
                 borderRadius: BorderRadius.circular(5.0))),
-        keyboardType: TextInputType.text);
+        keyboardType: textInputType);
   }
 }

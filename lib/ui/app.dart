@@ -1,5 +1,6 @@
 import 'package:d_email_flutter_client/bloc/auth/bloc.dart';
 import 'package:d_email_flutter_client/bloc/auth/state.dart';
+import 'package:d_email_flutter_client/data/email/repository.dart';
 import 'package:d_email_flutter_client/data/user/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,11 @@ import 'router.dart';
 
 class App extends StatelessWidget {
   final UserRepository userRepository;
+  final EmailRepository emailRepository;
 
-  const App({Key? key, required this.userRepository}) : super(key: key);
+  const App(
+      {Key? key, required this.userRepository, required this.emailRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,9 @@ class App extends StatelessWidget {
           builder: (context) {
             return BlocProvider<AuthBloc>(
                 create: (_) => AuthBloc(this.userRepository),
-                child: AppView(userRepository: this.userRepository));
+                child: AppView(
+                    userRepository: this.userRepository,
+                    emailRepository: this.emailRepository));
           },
         ));
   }
@@ -28,11 +34,14 @@ class App extends StatelessWidget {
 
 class AppView extends StatefulWidget {
   final UserRepository userRepository;
+  final EmailRepository emailRepository;
 
-  const AppView({Key? key, required this.userRepository}) : super(key: key);
+  const AppView(
+      {Key? key, required this.userRepository, required this.emailRepository})
+      : super(key: key);
 
   @override
-  _AppViewState createState() => _AppViewState(AppRouter());
+  _AppViewState createState() => _AppViewState(AppRouter(this.emailRepository));
 }
 
 class _AppViewState extends State<AppView> {

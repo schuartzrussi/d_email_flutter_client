@@ -1,4 +1,5 @@
 import 'package:alan/alan.dart';
+import 'package:d_email_flutter_client/data/email/repository.dart';
 import 'package:d_email_flutter_client/data/user/repository.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
@@ -21,5 +22,6 @@ void main() async {
 
   Box<User> userBox = await Hive.openBox("user");
   UserRepository userRepository = UserRepository(userBox, networkInfo);
-  runApp(App(userRepository: userRepository));
+  EmailRepository emailRepository = EmailRepository(networkInfo);
+  runApp(App(userRepository: userRepository, emailRepository: emailRepository));
 }
