@@ -69,6 +69,9 @@ class _AppViewState extends State<AppView> {
             if (state is AuthenticatedUserState) {
               _navigator?.pushNamedAndRemoveUntil(
                   AppRouter.HOME_PAGE_ROUTE, (route) => false);
+            } else {
+              _navigator?.pushNamedAndRemoveUntil(
+                  AppRouter.LOGIN_PAGE_ROUTE, (route) => false);
             }
           },
           child: child,

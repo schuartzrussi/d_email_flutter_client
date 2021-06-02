@@ -4,15 +4,15 @@ import 'package:equatable/equatable.dart';
 class HomeState extends Equatable {
   final bool loading;
   final List<Email>? emails;
-  final bool fetchError;
+  final String? fetchError;
 
-  HomeState({required this.loading, this.emails, required this.fetchError});
+  HomeState({required this.loading, this.emails, this.fetchError});
 
-  HomeState copyWith({List<Email>? emails, bool? loading, bool? fetchError}) {
+  HomeState copyWith({List<Email>? emails, bool? loading, String? fetchError}) {
     return HomeState(
         emails: emails ?? this.emails,
         loading: loading ?? false,
-        fetchError: fetchError ?? false);
+        fetchError: fetchError ?? null);
   }
 
   @override

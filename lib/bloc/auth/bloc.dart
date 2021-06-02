@@ -16,6 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield* _login(event);
     } else if (event is AutoLoginEvent) {
       yield* _autoLogin(event);
+    } else if (event is LogoutEvent) {
+      yield* _logout(event);
     }
   }
 
@@ -40,4 +42,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
 Stream<AuthState> _autoLogin(AutoLoginEvent event) async* {
   yield AuthenticatedUserState(event.user);
+}
+
+Stream<AuthState> _logout(LogoutEvent event) async* {
+  yield UnauthenticatedUserState();
 }

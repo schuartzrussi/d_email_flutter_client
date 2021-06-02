@@ -27,7 +27,9 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => SignupPage());
 
       case HOME_PAGE_ROUTE:
-        return MaterialPageRoute(builder: (_) => HomePage());
+        return MaterialPageRoute(
+            builder: (_) => RepositoryProvider.value(
+                value: this.emailRepository, child: HomePage()));
 
       case WRITE_EMAIL_PAGE_ROUTE:
         return MaterialPageRoute(
