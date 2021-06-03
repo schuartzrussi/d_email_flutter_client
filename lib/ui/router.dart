@@ -1,4 +1,5 @@
 import 'package:d_email_flutter_client/data/email/repository.dart';
+import 'package:d_email_flutter_client/ipfs_client/service/ipfs.dart';
 import 'package:d_email_flutter_client/ui/pages/login/page.dart';
 import 'package:d_email_flutter_client/ui/pages/signup/page.dart';
 import 'package:d_email_flutter_client/ui/pages/write_email/page.dart';

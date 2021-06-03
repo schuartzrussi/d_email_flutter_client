@@ -4,7 +4,6 @@ import 'package:d_email_flutter_client/bloc/auth/state.dart';
 import 'package:d_email_flutter_client/bloc/home/bloc.dart';
 import 'package:d_email_flutter_client/bloc/home/event.dart';
 import 'package:d_email_flutter_client/bloc/home/state.dart';
-import 'package:d_email_flutter_client/data/email/repository.dart';
 import 'package:d_email_flutter_client/ui/components/d_email_progress_dialog/component.dart';
 import 'package:d_email_flutter_client/ui/components/d_email_snackbar/component.dart';
 import 'package:d_email_flutter_client/ui/pages/home/list_view.dart';
@@ -33,7 +32,7 @@ class _HomePageScaffoldState extends State<HomePageScaffold> {
             IconButton(
               icon: Icon(Icons.refresh),
               onPressed: () {
-                HomeBloc(RepositoryProvider.of<EmailRepository>(context))
+                BlocProvider.of<HomeBloc>(context)
                   ..add(LoadEvent((BlocProvider.of<AuthBloc>(context).state
                           as AuthenticatedUserState)
                       .user));

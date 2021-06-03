@@ -1,0 +1,5 @@
+Esse pacote foi feito com base no projeto de 
+ngngardner publicado em https://github.com/ngngardner/dart_ipfs_client.
+
+Foi necessario aplicar ajustes para compatibilizar essa lib com 
+outras libs utilizadas no app.

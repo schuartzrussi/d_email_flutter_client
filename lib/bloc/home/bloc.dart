@@ -26,7 +26,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       yield state.copyWith(emails: emails, loading: false, fetchError: null);
     } catch (e, s) {
-      print(e);
       print("StackTrace $s");
       yield state.copyWith(
           fetchError: "Ocorreu um erro inesperado", loading: false);
