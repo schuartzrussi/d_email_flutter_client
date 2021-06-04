@@ -155,8 +155,8 @@ class EmailRepository extends Repository {
       for (int i = 0; i < response.email.length; i++) {
         var trackIDs = response.email[i].trackIds;
         if (trackIDs.contains(user.trackID.toString())) {
-          Email? email = await decryptProtoEmail(
-              _rsaKeyHelper, userPrivateKey, userPublicKey, response.email[i]);
+          Email? email = await decryptProtoEmail(user.email, _rsaKeyHelper,
+              userPrivateKey, userPublicKey, response.email[i]);
           if (email != null) {
             result.add(email);
           }
@@ -168,6 +168,7 @@ class EmailRepository extends Repository {
   }
 
   Future<Email?> decryptProtoEmail(
+      String userEmail,
       rsaEncrypt.RsaKeyHelper rsaKeyHelper,
       RSAPrivateKey userPrivateKey,
       RSAPublicKey userPublicKey,
@@ -195,6 +196,10 @@ class EmailRepository extends Repository {
               aesEncrypt.AES(key, mode: aesEncrypt.AESMode.cbc));
 
           String from = decrypter.decrypt64(email.from, iv: iv);
+
+          if (userEmail == from) {
+            continue;
+          }
 
           String bodyIpfsCid = email.body;
           String subject = decrypter.decrypt64(email.subject, iv: iv);

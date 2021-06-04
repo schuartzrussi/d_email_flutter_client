@@ -1,5 +1,6 @@
 import 'package:d_email_flutter_client/bloc/home/state.dart';
 import 'package:d_email_flutter_client/data/email/model.dart';
+import 'package:d_email_flutter_client/ui/router.dart';
 import 'package:flutter/material.dart';
 
 class HomeListView extends StatelessWidget {
@@ -37,6 +38,13 @@ class _EmailCard extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                AppRouter.VIEW_EMAIL_PAGE_ROUTE,
+                arguments: this.email,
+              );
+            },
             title: Text(this.email.subject),
             subtitle: Text(this.email.from +
                 " - Enviado em " +
