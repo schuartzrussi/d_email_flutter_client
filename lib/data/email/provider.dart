@@ -29,8 +29,8 @@ class DEmailEmailProvider extends BaseDEmailProvider {
     this.queryClient = QueryClient(this.demailNetworkInfo.gRPCChannel);
   }
 
-  Future<void> sendEmail(
-      User user, List<String> to, String subject, String body) async {
+  Future<void> sendEmail(Email? replyTo, User user, List<String> to,
+      String subject, String body) async {
     Wallet wallet = generateWallet(user.mnemonic);
 
     AESImpl aesImpl = AESImpl.generateKey();
@@ -46,12 +46,12 @@ class DEmailEmailProvider extends BaseDEmailProvider {
 
       RSAImpl rsaImpl = RSAImpl();
       rsaImpl.setKeyPair(address.pubKey, null);
-      decryptionKeys.add(encryptAesKey(aesImpl, rsaImpl));
+      decryptionKeys.add(encryptAesKeyWithRsa(aesImpl, rsaImpl));
     });
 
     RSAImpl senderRsaImpl = RSAImpl();
     senderRsaImpl.setKeyPair(user.rsaPublicKey, user.rsaPrivateKey);
-    decryptionKeys.add(encryptAesKey(aesImpl, senderRsaImpl));
+    decryptionKeys.add(encryptAesKeyWithRsa(aesImpl, senderRsaImpl));
 
     String sendedAt = DateUtils.getCurrentISOTimeString();
 
@@ -71,6 +71,12 @@ class DEmailEmailProvider extends BaseDEmailProvider {
     message.decryptionKeys.addAll(decryptionKeys);
     message.trackIds.addAll(trackIDs);
 
+    if (replyTo != null) {
+      message.replyTo = replyTo.id;
+      message.previousDecryptionKey = encryptAesKeyWithAes(aesImpl,
+          AESImpl.fromBase64Key(replyTo.decryptionKey, replyTo.decryptionIV));
+    }
+
     try {
       final response = await sendTransaction(wallet, message, false);
       if (!response.isSuccessful) {
@@ -89,14 +95,23 @@ class DEmailEmailProvider extends BaseDEmailProvider {
       RSAImpl rsaImpl = RSAImpl();
       rsaImpl.setKeyPair(user.rsaPublicKey, user.rsaPrivateKey);
 
+      Map<String, Email> emailCache = {};
+      Map<String, emailProto.Email> protoEmailCache = {};
+
+      response.email.forEach((element) {
+        protoEmailCache[element.id] = element;
+      });
+
       for (int i = 0; i < response.email.length; i++) {
         try {
-          var trackIDs = response.email[i].trackIds;
+          var emailProto = response.email[i];
+          var trackIDs = emailProto.trackIds;
           if (trackIDs.contains(user.trackID.toString())) {
-            Email? email =
-                await decryptProtoEmail(user.email, rsaImpl, response.email[i]);
+            Email? email = await decryptProtoEmail(user.email, rsaImpl,
+                emailProto, null, emailCache, protoEmailCache);
             if (email != null) {
               result.add(email);
+              emailCache[email.id] = email;
             }
           }
         } catch (e) {
@@ -109,37 +124,95 @@ class DEmailEmailProvider extends BaseDEmailProvider {
   }
 
   Future<Email?> decryptProtoEmail(
-      String userEmail, RSAImpl rsaImpl, emailProto.Email email) async {
-    AESImpl? aesImpl = getAesDecryptionKey(rsaImpl, email.decryptionKeys);
+      String userEmail,
+      RSAImpl rsaImpl,
+      emailProto.Email emailProto,
+      AESImpl? aesImpl,
+      Map<String, Email> emailCache,
+      Map<String, emailProto.Email> protoEmailCache) async {
     if (aesImpl == null) {
-      return null;
+      aesImpl = getAesDecryptionKey(rsaImpl, emailProto.decryptionKeys);
+      if (aesImpl == null) {
+        return null;
+      }
     }
 
-    String from = aesImpl.decrypt(email.from);
+    String from = aesImpl.decrypt(emailProto.from);
     if (userEmail == from) {
       return null;
     }
 
-    String bodyIpfsCid = email.body;
-    String subject = aesImpl.decrypt(email.subject);
-    List<String> to = aesImpl.decrypt(email.to).split(";");
+    String bodyIpfsCid = emailProto.body;
+    String subject = aesImpl.decrypt(emailProto.subject);
+    List<String> to = aesImpl.decrypt(emailProto.to).split(";");
 
-    bool validSignature = await validateSignature(
-        email.senderSignature, from, bodyIpfsCid, email.sendedAt, to, subject);
+    bool validSignature = await validateSignature(emailProto.senderSignature,
+        from, bodyIpfsCid, emailProto.sendedAt, to, subject);
     if (!validSignature) {
-      print(email.id);
       return null;
     }
 
     String body = await loadIpfsBody(aesImpl, bodyIpfsCid);
 
-    return Email(
-        id: email.id,
+    var email = Email(
+        id: emailProto.id,
         from: from,
         to: to,
         body: body,
         subject: subject,
-        sendedAt: DateTime.parse(email.sendedAt));
+        sendedAt: DateTime.parse(emailProto.sendedAt),
+        decryptionKey: aesImpl.base64Key!,
+        decryptionIV: aesImpl.iv!.base16);
+
+    if (emailProto.replyTo.trim() != "") {
+      if (emailCache.containsKey(emailProto.replyTo)) {
+        email.previous = emailCache[emailProto.replyTo];
+      } else {
+        AESImpl? previousEmailAesImpl = getAesPreviousDecryptionKey(
+            emailProto.previousDecryptionKey, aesImpl);
+        if (previousEmailAesImpl != null) {
+          Email? previous = await getPreviousEmail(
+              userEmail,
+              emailProto.replyTo,
+              previousEmailAesImpl,
+              rsaImpl,
+              emailCache,
+              protoEmailCache);
+          if (previous != null) {
+            email.previous = previous;
+            emailCache[previous.id] = previous;
+          }
+        }
+      }
+    }
+
+    return email;
+  }
+
+  Future<Email?> getPreviousEmail(
+      String userEmail,
+      String id,
+      AESImpl aesImpl,
+      RSAImpl rsaImpl,
+      Map<String, Email> emailCache,
+      Map<String, emailProto.Email> protoEmailCache) async {
+    emailProto.Email? ep;
+
+    if (protoEmailCache.containsKey(id)) {
+      ep = protoEmailCache[id];
+    } else {
+      var response =
+          await this.queryClient!.emailById(QueryGetEmailByIdRequest(id: id));
+      ep = response.email;
+      protoEmailCache[id] = ep;
+    }
+
+    if (ep!.id != "") {
+      return await decryptProtoEmail(
+          userEmail, rsaImpl, ep, aesImpl, emailCache, protoEmailCache);
+    }
+
+    return null;
   }
 
   AESImpl? getAesDecryptionKey(RSAImpl rsaImpl, List<String> decryptionKeys) {
@@ -169,17 +242,40 @@ class DEmailEmailProvider extends BaseDEmailProvider {
     return null;
   }
 
-  String encryptAesKey(AESImpl aesImpl, RSAImpl rsaImpl) {
-    String encryptedAesKey = rsaImpl.encrypt(aesImpl.base64Key!);
+  AESImpl? getAesPreviousDecryptionKey(
+      String previousDecryptionKey, AESImpl aesImpl) {
+    int idxIvSeparator = previousDecryptionKey.indexOf("-");
+    if (idxIvSeparator != -1) {
+      List decryptionKeyParts = [
+        previousDecryptionKey.substring(0, idxIvSeparator).trim(),
+        previousDecryptionKey.substring(idxIvSeparator + 1).trim()
+      ];
+
+      Uint8List fromBase64 = base64.decode(decryptionKeyParts[1]);
+      String originalValue = utf8.decode(fromBase64);
+
+      String aesKeyValue = aesImpl.decrypt(originalValue);
+      return AESImpl.fromBase64Key(aesKeyValue, decryptionKeyParts[0]);
+    }
+  }
+
+  String encryptAesKeyWithRsa(AESImpl key, RSAImpl rsaImpl) {
+    String encryptedAesKey = rsaImpl.encrypt(key.base64Key!);
     var bytes = utf8.encode(encryptedAesKey);
     var base64Str = base64.encode(bytes);
-    return "${aesImpl.iv!.base16}-$base64Str";
+    return "${key.iv!.base16}-$base64Str";
+  }
+
+  String encryptAesKeyWithAes(AESImpl key, AESImpl aesImpl) {
+    String encryptedAesKey = aesImpl.encrypt(key.base64Key!);
+    var bytes = utf8.encode(encryptedAesKey);
+    var base64Str = base64.encode(bytes);
+    return "${key.iv!.base16}-$base64Str";
   }
 
   String generateSignature(RSAImpl rsaImpl, String from, String bodyIpfsCid,
       String sendedAt, List<String> to, String subject) {
     String dataToSign = "$from-$bodyIpfsCid-$sendedAt-${to.join(';')}-$subject";
-    print("to sign: ${dataToSign}");
     return rsaImpl.sign(dataToSign);
   }
 
@@ -192,7 +288,6 @@ class DEmailEmailProvider extends BaseDEmailProvider {
       String subject) async {
     var senderAddress = await this.addressProvider.getAddress(from);
     String signedData = "$from-$bodyIpfsCid-$sendedAt-${to.join(';')}-$subject";
-    print("Signed: $signedData");
     RSAImpl rsaImpl = RSAImpl();
     rsaImpl.setKeyPair(senderAddress.pubKey, null);
     return rsaImpl.validateSignature(signature, signedData);

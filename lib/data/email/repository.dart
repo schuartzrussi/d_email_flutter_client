@@ -21,9 +21,9 @@ class EmailRepository extends Repository {
         DEmailEmailProvider(demailNetworkInfo, addressProvider, this.ipfs);
   }
 
-  Future<void> sendEmail(
-      User user, List<String> to, String subject, String body) async {
-    await this.emailProvider!.sendEmail(user, to, subject, body);
+  Future<void> sendEmail(Email? replyTo, User user, List<String> to,
+      String subject, String body) async {
+    await this.emailProvider!.sendEmail(replyTo, user, to, subject, body);
   }
 
   Future<List<Email>> findAllUserEmails(User user) async {

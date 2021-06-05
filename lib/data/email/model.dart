@@ -6,32 +6,23 @@ class Email extends Equatable {
   final String id;
   final String from;
   final List<String> to;
-  final String? senderSignature;
-  final int? senderAddressVersion;
   final String subject;
   final String body;
-  final List<String>? attachments;
-  final String? replyTo;
-  final List<String>? trackIds;
   final DateTime sendedAt;
-  final List<String>? decryptionKeys;
-  final String? previousDecryptionKey;
+  Email? previous;
+  final String decryptionKey;
+  final String decryptionIV;
 
   Email(
       {this.creator,
       required this.id,
       required this.from,
       required this.to,
-      this.senderSignature,
-      this.senderAddressVersion,
       required this.subject,
       required this.body,
-      this.attachments,
-      this.replyTo,
-      this.trackIds,
       required this.sendedAt,
-      this.decryptionKeys,
-      this.previousDecryptionKey});
+      required this.decryptionKey,
+      required this.decryptionIV});
 
   @override
   List<Object?> get props => [
@@ -39,16 +30,12 @@ class Email extends Equatable {
         this.id,
         this.from,
         this.to,
-        this.senderSignature,
-        this.senderAddressVersion,
         this.subject,
         this.body,
-        this.attachments,
-        this.replyTo,
-        this.trackIds,
         this.sendedAt,
-        this.decryptionKeys,
-        this.previousDecryptionKey
+        this.previous,
+        this.decryptionKey,
+        this.decryptionIV
       ];
 
   String getFormattedSendedAt() {
