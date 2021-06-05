@@ -1,23 +1,23 @@
-import 'package:d_email_flutter_client/bloc/home/state.dart';
 import 'package:d_email_flutter_client/data/email/model.dart';
 import 'package:d_email_flutter_client/data/email/repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'event.dart';
+import 'state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class InboxBloc extends Bloc<InboxEvent, InboxState> {
   final EmailRepository emailRepository;
 
-  HomeBloc(this.emailRepository) : super(HomeState(loading: false));
+  InboxBloc(this.emailRepository) : super(InboxState(loading: false));
 
   @override
-  Stream<HomeState> mapEventToState(HomeEvent event) async* {
+  Stream<InboxState> mapEventToState(InboxEvent event) async* {
     if (event is LoadEvent) {
       yield* _loadEmails(event);
     }
   }
 
-  Stream<HomeState> _loadEmails(LoadEvent event) async* {
+  Stream<InboxState> _loadEmails(LoadEvent event) async* {
     yield state.copyWith(loading: true);
 
     try {

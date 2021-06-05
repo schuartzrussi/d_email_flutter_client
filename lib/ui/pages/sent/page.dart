@@ -1,25 +1,25 @@
 import 'package:d_email_flutter_client/bloc/auth/bloc.dart';
 import 'package:d_email_flutter_client/bloc/auth/state.dart';
-import 'package:d_email_flutter_client/bloc/home/bloc.dart';
-import 'package:d_email_flutter_client/bloc/home/event.dart';
+import 'package:d_email_flutter_client/bloc/sent/bloc.dart';
+import 'package:d_email_flutter_client/bloc/sent/event.dart';
 import 'package:d_email_flutter_client/data/email/repository.dart';
-import 'package:d_email_flutter_client/ui/pages/home/scaffold.dart';
+import 'package:d_email_flutter_client/ui/pages/sent/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatefulWidget {
+class SentPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _SentPageState createState() => _SentPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SentPageState extends State<SentPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeBloc>(
-        create: (_) => HomeBloc(RepositoryProvider.of<EmailRepository>(context))
+    return BlocProvider<SentBloc>(
+        create: (_) => SentBloc(RepositoryProvider.of<EmailRepository>(context))
           ..add(LoadEvent((BlocProvider.of<AuthBloc>(context).state
                   as AuthenticatedUserState)
               .user)),
-        child: HomePageScaffold());
+        child: SentPageScaffold());
   }
 }

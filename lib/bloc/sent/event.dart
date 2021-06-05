@@ -1,9 +1,9 @@
 import 'package:d_email_flutter_client/data/user/model.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class HomeEvent extends Equatable {}
+abstract class SentEvent extends Equatable {}
 
-class LoadEvent extends HomeEvent {
+class LoadEvent extends SentEvent {
   final User user;
 
   LoadEvent(this.user);

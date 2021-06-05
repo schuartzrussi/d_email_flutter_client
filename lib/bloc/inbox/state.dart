@@ -1,15 +1,16 @@
 import 'package:d_email_flutter_client/data/email/model.dart';
 import 'package:equatable/equatable.dart';
 
-class HomeState extends Equatable {
+class InboxState extends Equatable {
   final bool loading;
   final List<Email>? emails;
   final String? fetchError;
 
-  HomeState({required this.loading, this.emails, this.fetchError});
+  InboxState({required this.loading, this.emails, this.fetchError});
 
-  HomeState copyWith({List<Email>? emails, bool? loading, String? fetchError}) {
-    return HomeState(
+  InboxState copyWith(
+      {List<Email>? emails, bool? loading, String? fetchError}) {
+    return InboxState(
         emails: emails ?? this.emails,
         loading: loading ?? false,
         fetchError: fetchError ?? null);

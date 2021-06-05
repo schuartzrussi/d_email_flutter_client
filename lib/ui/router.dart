@@ -1,6 +1,8 @@
 import 'package:d_email_flutter_client/data/email/repository.dart';
 import 'package:d_email_flutter_client/ipfs_client/service/ipfs.dart';
+import 'package:d_email_flutter_client/ui/pages/inbox/page.dart';
 import 'package:d_email_flutter_client/ui/pages/login/page.dart';
+import 'package:d_email_flutter_client/ui/pages/sent/page.dart';
 import 'package:d_email_flutter_client/ui/pages/signup/page.dart';
 import 'package:d_email_flutter_client/ui/pages/view_email/page.dart';
 import 'package:d_email_flutter_client/ui/pages/write_email/page.dart';
@@ -8,14 +10,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'pages/home/page.dart';
-
 class AppRouter {
   static const String LOGIN_PAGE_ROUTE = "/login";
   static const String SIGNUP_PAGE_ROUTE = "/signup";
   static const String HOME_PAGE_ROUTE = "/home";
   static const String WRITE_EMAIL_PAGE_ROUTE = "/write";
   static const String VIEW_EMAIL_PAGE_ROUTE = "/view";
+  static const String INBOX_PAGE_ROUTE = "/inbox";
+  static const String SENT_PAGE_ROUTE = "/sent";
 
   final EmailRepository emailRepository;
 
@@ -29,10 +31,25 @@ class AppRouter {
       case SIGNUP_PAGE_ROUTE:
         return MaterialPageRoute(builder: (_) => SignupPage());
 
+      /*
       case HOME_PAGE_ROUTE:
         return MaterialPageRoute(
             builder: (_) => RepositoryProvider.value(
-                value: this.emailRepository, child: HomePage()));
+                value: this.emailRepository, child: HomePage()));*/
+
+      case INBOX_PAGE_ROUTE:
+        return PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                RepositoryProvider.value(
+                    value: this.emailRepository, child: InboxPage()),
+            transitionDuration: Duration(seconds: 0));
+
+      case SENT_PAGE_ROUTE:
+        return PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                RepositoryProvider.value(
+                    value: this.emailRepository, child: SentPage()),
+            transitionDuration: Duration(seconds: 0));
 
       case WRITE_EMAIL_PAGE_ROUTE:
         return MaterialPageRoute(
