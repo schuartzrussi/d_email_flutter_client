@@ -24,6 +24,7 @@ class MsgCreateEmail extends $pb.GeneratedMessage {
     ..aOS(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sendedAt', protoName: 'sendedAt')
     ..pPS(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'decryptionKeys', protoName: 'decryptionKeys')
     ..aOS(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'previousDecryptionKey', protoName: 'previousDecryptionKey')
+    ..aOS(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..hasRequiredFields = false
   ;
 
@@ -41,6 +42,7 @@ class MsgCreateEmail extends $pb.GeneratedMessage {
     $core.String? sendedAt,
     $core.Iterable<$core.String>? decryptionKeys,
     $core.String? previousDecryptionKey,
+    $core.String? id,
   }) {
     final _result = create();
     if (creator != null) {
@@ -78,6 +80,9 @@ class MsgCreateEmail extends $pb.GeneratedMessage {
     }
     if (previousDecryptionKey != null) {
       _result.previousDecryptionKey = previousDecryptionKey;
+    }
+    if (id != null) {
+      _result.id = id;
     }
     return _result;
   }
@@ -197,6 +202,15 @@ class MsgCreateEmail extends $pb.GeneratedMessage {
   $core.bool hasPreviousDecryptionKey() => $_has(11);
   @$pb.TagNumber(12)
   void clearPreviousDecryptionKey() => clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.String get id => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set id($core.String v) { $_setString(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasId() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearId() => clearField(13);
 }
 
 class MsgCreateEmailResponse extends $pb.GeneratedMessage {

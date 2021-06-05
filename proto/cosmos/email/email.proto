@@ -3,8 +3,6 @@ package schrsi.demail.email;
 
 option go_package = "github.com/schrsi/d-email/x/email/types";
 
-import "gogoproto/gogo.proto";
-
 message Email {
   string creator = 1;
   string id = 2;

@@ -1,11 +1,19 @@
 import 'package:d_email_flutter_client/data/email/model.dart';
 import 'package:flutter/material.dart';
 
+import 'card.dart';
+
 class ViewEmailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var email = ModalRoute.of(context)!.settings.arguments as Email;
-    print(email.id);
+    var cards = [EmailCard(email: email)];
+    var previousEmail = email.previous;
+
+    while (previousEmail != null) {
+      cards.add(EmailCard(email: previousEmail));
+      previousEmail = previousEmail.previous;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -20,7 +28,8 @@ class ViewEmailPage extends StatelessWidget {
               children: [
                 Container(
                     constraints: BoxConstraints(maxWidth: 500, maxHeight: 700),
-                    child: Text("Pera e")),
+                    child:
+                        SingleChildScrollView(child: Column(children: cards))),
               ],
             ),
           ],

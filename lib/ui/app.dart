@@ -83,6 +83,7 @@ class _AppViewState extends State<AppView> {
   @override
   void dispose() {
     this.widget.userRepository.dispose();
+    this.widget.emailRepository.dispose();
     super.dispose();
   }
 }

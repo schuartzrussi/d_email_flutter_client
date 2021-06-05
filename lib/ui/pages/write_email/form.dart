@@ -3,6 +3,7 @@ import 'package:d_email_flutter_client/bloc/auth/state.dart';
 import 'package:d_email_flutter_client/bloc/email/write/bloc.dart';
 import 'package:d_email_flutter_client/bloc/email/write/event.dart';
 import 'package:d_email_flutter_client/bloc/email/write/state.dart';
+import 'package:d_email_flutter_client/data/email/model.dart';
 import 'package:d_email_flutter_client/ui/components/d_email_progress_dialog/component.dart';
 import 'package:d_email_flutter_client/ui/components/d_email_snackbar/component.dart';
 import 'package:d_email_flutter_client/ui/components/d_email_text_form_field/component.dart';
@@ -11,7 +12,13 @@ import 'package:d_email_flutter_client/ui/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'arguments.dart';
+
 class WriteEmailForm extends StatefulWidget {
+  final WriteEmailArguments? arguments;
+
+  const WriteEmailForm({Key? key, this.arguments}) : super(key: key);
+
   @override
   _WriteEmailFormState createState() => _WriteEmailFormState();
 }
@@ -27,6 +34,13 @@ class _WriteEmailFormState extends State<WriteEmailForm> {
   @override
   Widget build(BuildContext context) {
     this._progressDialog = DEmailProgressDialog(context);
+
+    bool subjectEnabled = true;
+    if (widget.arguments != null && widget.arguments!.to != null) {
+      _toController.text = widget.arguments!.to!.join(";");
+      subjectEnabled = false;
+      _subjectController.text = widget.arguments!.responseTo!.subject;
+    }
 
     return SafeArea(
         minimum: const EdgeInsets.all(16),
@@ -67,6 +81,7 @@ class _WriteEmailFormState extends State<WriteEmailForm> {
                         DEmailTextFormField(
                             label: "Assunto",
                             textInputType: TextInputType.text,
+                            enabled: subjectEnabled,
                             obscureText: false,
                             textEditingController: _subjectController,
                             validator: (val) => RequiredFieldFormValidator
@@ -97,10 +112,16 @@ class _WriteEmailFormState extends State<WriteEmailForm> {
       onPressed: () {
         var formState = _key.currentState;
         if (formState != null && formState.validate()) {
+          Email? responseTo;
+          if (widget.arguments != null) {
+            responseTo = widget.arguments!.responseTo;
+          }
+
           BlocProvider.of<WriteEmailBloc>(context).add(SendEmailEvent(
               user: (BlocProvider.of<AuthBloc>(context).state
                       as AuthenticatedUserState)
                   .user,
+              responseTo: responseTo,
               subject: this._subjectController.text,
               body: this._bodyController.text,
               to: this._toController.text.split(";")));

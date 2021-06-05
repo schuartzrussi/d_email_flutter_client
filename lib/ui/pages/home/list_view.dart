@@ -21,16 +21,16 @@ class HomeListView extends StatelessWidget {
     return ListView.builder(
       itemCount: this.homeState.emails!.length,
       itemBuilder: (BuildContext context, int index) {
-        return _EmailCard(email: this.homeState.emails![index]);
+        return _Card(email: this.homeState.emails![index]);
       },
     );
   }
 }
 
-class _EmailCard extends StatelessWidget {
+class _Card extends StatelessWidget {
   final Email email;
 
-  const _EmailCard({Key? key, required this.email}) : super(key: key);
+  const _Card({Key? key, required this.email}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

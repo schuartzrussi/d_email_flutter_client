@@ -13,6 +13,7 @@ import 'package:d_email_flutter_client/proto/cosmos/email/tx.pb.dart';
 import 'package:d_email_flutter_client/util/date.dart';
 import 'package:d_email_flutter_client/proto/cosmos/email/query.pbgrpc.dart';
 import 'package:fixnum/fixnum.dart' as fixnum;
+import 'package:crypto/crypto.dart';
 import 'package:d_email_flutter_client/proto/cosmos/email/email.pb.dart'
     as emailProto;
 
@@ -29,7 +30,7 @@ class DEmailEmailProvider extends BaseDEmailProvider {
     this.queryClient = QueryClient(this.demailNetworkInfo.gRPCChannel);
   }
 
-  Future<void> sendEmail(Email? replyTo, User user, List<String> to,
+  Future<Email> sendEmail(Email? replyTo, User user, List<String> to,
       String subject, String body) async {
     Wallet wallet = generateWallet(user.mnemonic);
 
@@ -53,20 +54,38 @@ class DEmailEmailProvider extends BaseDEmailProvider {
     senderRsaImpl.setKeyPair(user.rsaPublicKey, user.rsaPrivateKey);
     decryptionKeys.add(encryptAesKeyWithRsa(aesImpl, senderRsaImpl));
 
-    String sendedAt = DateUtils.getCurrentISOTimeString();
+    DateTime now = DateTime.now();
+    String sendedAtStr = DateUtils.getCurrentISOTimeString(dateTime: now);
 
     String bodyIpfsCid = await saveBodyInIpfs(aesImpl, body);
 
+    String encryptedFrom = aesImpl.encrypt(user.email);
+    String encryptedSubject = aesImpl.encrypt(subject);
+    String signature = generateSignature(
+        senderRsaImpl, user.email, bodyIpfsCid, sendedAtStr, to, subject);
+    String toStr = aesImpl.encrypt(to.join(";"));
+
+    var idHashContent = encryptedFrom +
+        toStr +
+        sendedAtStr +
+        signature +
+        encryptedSubject +
+        bodyIpfsCid +
+        trackIDs.join(";") +
+        decryptionKeys.join(";");
+
+    String id = sha256.convert(utf8.encode(idHashContent)).toString();
+
     final message = MsgCreateEmail.create()
+      ..id = id
       ..creator = wallet.bech32Address
-      ..from = aesImpl.encrypt(user.email)
-      ..subject = aesImpl.encrypt(subject)
+      ..from = encryptedFrom
+      ..subject = encryptedSubject
       ..body = bodyIpfsCid
-      ..sendedAt = sendedAt
+      ..sendedAt = sendedAtStr
       ..senderAddressVersion = fixnum.Int64(1)
-      ..to = aesImpl.encrypt(to.join(";"))
-      ..senderSignature = generateSignature(
-          senderRsaImpl, user.email, bodyIpfsCid, sendedAt, to, subject);
+      ..to = toStr
+      ..senderSignature = signature;
 
     message.decryptionKeys.addAll(decryptionKeys);
     message.trackIds.addAll(trackIDs);
@@ -85,6 +104,18 @@ class DEmailEmailProvider extends BaseDEmailProvider {
     } catch (e) {
       throw e;
     }
+
+    return Email(
+        id: id,
+        sendedAt: now,
+        subject: subject,
+        body: body,
+        from: user.email,
+        to: to,
+        previousID: replyTo?.id,
+        decryptionIV: aesImpl.iv!.base16,
+        decryptionKey: aesImpl.base64Key!,
+        previous: replyTo);
   }
 
   Future<List<Email>> getAllUserEmails(User user) async {
@@ -115,6 +146,7 @@ class DEmailEmailProvider extends BaseDEmailProvider {
             }
           }
         } catch (e) {
+          print(e);
           continue;
         }
       }
@@ -253,8 +285,9 @@ class DEmailEmailProvider extends BaseDEmailProvider {
 
       Uint8List fromBase64 = base64.decode(decryptionKeyParts[1]);
       String originalValue = utf8.decode(fromBase64);
-
+      print(originalValue);
       String aesKeyValue = aesImpl.decrypt(originalValue);
+      print("aqui nao 11");
       return AESImpl.fromBase64Key(aesKeyValue, decryptionKeyParts[0]);
     }
   }
@@ -266,7 +299,7 @@ class DEmailEmailProvider extends BaseDEmailProvider {
     return "${key.iv!.base16}-$base64Str";
   }
 
-  String encryptAesKeyWithAes(AESImpl key, AESImpl aesImpl) {
+  String encryptAesKeyWithAes(AESImpl aesImpl, AESImpl key) {
     String encryptedAesKey = aesImpl.encrypt(key.base64Key!);
     var bytes = utf8.encode(encryptedAesKey);
     var base64Str = base64.encode(bytes);

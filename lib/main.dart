@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+import 'data/email/model.dart';
 import 'data/user/model.dart';
 import 'ipfs_client/service/ipfs.dart';
 import 'ui/app.dart';
@@ -14,7 +15,8 @@ void main() async {
 
   Hive
     ..init(appDocDir.path)
-    ..registerAdapter(UserAdapter());
+    ..registerAdapter(UserAdapter())
+    ..registerAdapter(EmailAdapter());
 
   final networkInfo = NetworkInfo.fromSingleHost(
     bech32Hrp: 'demail',
@@ -24,7 +26,11 @@ void main() async {
   var ipfs = Ipfs(url: 'http://127.0.0.1:5001');
 
   Box<User> userBox = await Hive.openBox("user");
+  Box<Email> emailBox = await Hive.openBox("email");
+  Box<String> flagsBox = await Hive.openBox("flags");
+
   UserRepository userRepository = UserRepository(userBox, networkInfo);
-  EmailRepository emailRepository = EmailRepository(networkInfo, ipfs);
+  EmailRepository emailRepository =
+      EmailRepository(networkInfo, ipfs, emailBox, flagsBox);
   runApp(App(userRepository: userRepository, emailRepository: emailRepository));
 }

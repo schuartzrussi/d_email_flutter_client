@@ -71,7 +71,6 @@ class _HomePageScaffoldState extends State<HomePageScaffold> {
           },
           child: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
-              print("chamou com emails: ${state.emails?.length}");
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

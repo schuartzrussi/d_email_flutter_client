@@ -1,5 +1,6 @@
 import 'package:d_email_flutter_client/bloc/email/write/bloc.dart';
 import 'package:d_email_flutter_client/data/email/repository.dart';
+import 'package:d_email_flutter_client/ui/pages/write_email/arguments.dart';
 import 'package:d_email_flutter_client/ui/pages/write_email/form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,12 @@ class WriteEmailPage extends StatefulWidget {
 class _WriteEmailPageState extends State<WriteEmailPage> {
   @override
   Widget build(BuildContext context) {
+    WriteEmailArguments? arguments;
+    if (ModalRoute.of(context)?.settings.arguments != null) {
+      arguments =
+          ModalRoute.of(context)?.settings.arguments as WriteEmailArguments;
+    }
+
     return BlocProvider<WriteEmailBloc>(
       create: (_) =>
           WriteEmailBloc(RepositoryProvider.of<EmailRepository>(context)),
@@ -19,7 +26,7 @@ class _WriteEmailPageState extends State<WriteEmailPage> {
         appBar: AppBar(
           title: Text('Novo email'),
         ),
-        body: WriteEmailForm(),
+        body: WriteEmailForm(arguments: arguments),
       ),
     );
   }

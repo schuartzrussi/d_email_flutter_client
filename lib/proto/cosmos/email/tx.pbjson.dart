@@ -24,11 +24,12 @@ const MsgCreateEmail$json = const {
     const {'1': 'sendedAt', '3': 10, '4': 1, '5': 9, '10': 'sendedAt'},
     const {'1': 'decryptionKeys', '3': 11, '4': 3, '5': 9, '10': 'decryptionKeys'},
     const {'1': 'previousDecryptionKey', '3': 12, '4': 1, '5': 9, '10': 'previousDecryptionKey'},
+    const {'1': 'id', '3': 13, '4': 1, '5': 9, '10': 'id'},
   ],
 };
 
 /// Descriptor for `MsgCreateEmail`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List msgCreateEmailDescriptor = $convert.base64Decode('Cg5Nc2dDcmVhdGVFbWFpbBIYCgdjcmVhdG9yGAEgASgJUgdjcmVhdG9yEhIKBGZyb20YAiABKAlSBGZyb20SDgoCdG8YAyABKAlSAnRvEigKD3NlbmRlclNpZ25hdHVyZRgEIAEoCVIPc2VuZGVyU2lnbmF0dXJlEjIKFHNlbmRlckFkZHJlc3NWZXJzaW9uGAUgASgEUhRzZW5kZXJBZGRyZXNzVmVyc2lvbhIYCgdzdWJqZWN0GAYgASgJUgdzdWJqZWN0EhIKBGJvZHkYByABKAlSBGJvZHkSGAoHcmVwbHlUbxgIIAEoCVIHcmVwbHlUbxIaCgh0cmFja0lkcxgJIAMoCVIIdHJhY2tJZHMSGgoIc2VuZGVkQXQYCiABKAlSCHNlbmRlZEF0EiYKDmRlY3J5cHRpb25LZXlzGAsgAygJUg5kZWNyeXB0aW9uS2V5cxI0ChVwcmV2aW91c0RlY3J5cHRpb25LZXkYDCABKAlSFXByZXZpb3VzRGVjcnlwdGlvbktleQ==');
+final $typed_data.Uint8List msgCreateEmailDescriptor = $convert.base64Decode('Cg5Nc2dDcmVhdGVFbWFpbBIYCgdjcmVhdG9yGAEgASgJUgdjcmVhdG9yEhIKBGZyb20YAiABKAlSBGZyb20SDgoCdG8YAyABKAlSAnRvEigKD3NlbmRlclNpZ25hdHVyZRgEIAEoCVIPc2VuZGVyU2lnbmF0dXJlEjIKFHNlbmRlckFkZHJlc3NWZXJzaW9uGAUgASgEUhRzZW5kZXJBZGRyZXNzVmVyc2lvbhIYCgdzdWJqZWN0GAYgASgJUgdzdWJqZWN0EhIKBGJvZHkYByABKAlSBGJvZHkSGAoHcmVwbHlUbxgIIAEoCVIHcmVwbHlUbxIaCgh0cmFja0lkcxgJIAMoCVIIdHJhY2tJZHMSGgoIc2VuZGVkQXQYCiABKAlSCHNlbmRlZEF0EiYKDmRlY3J5cHRpb25LZXlzGAsgAygJUg5kZWNyeXB0aW9uS2V5cxI0ChVwcmV2aW91c0RlY3J5cHRpb25LZXkYDCABKAlSFXByZXZpb3VzRGVjcnlwdGlvbktleRIOCgJpZBgNIAEoCVICaWQ=');
 @$core.Deprecated('Use msgCreateEmailResponseDescriptor instead')
 const MsgCreateEmailResponse$json = const {
   '1': 'MsgCreateEmailResponse',

@@ -36,6 +36,7 @@ class AppRouter {
 
       case WRITE_EMAIL_PAGE_ROUTE:
         return MaterialPageRoute(
+            settings: settings,
             builder: (_) => RepositoryProvider.value(
                 value: this.emailRepository, child: WriteEmailPage()));
 

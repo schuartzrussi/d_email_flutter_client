@@ -21,6 +21,7 @@ message MsgCreateEmail {
   string sendedAt = 10;
   repeated string decryptionKeys = 11;
   string previousDecryptionKey = 12;
+  string id = 13;
 }
 
 message MsgCreateEmailResponse {

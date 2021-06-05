@@ -5,6 +5,7 @@ class DEmailTextFormField extends StatelessWidget {
   final int? maxLines;
   final TextInputType? textInputType;
   final bool obscureText;
+  final bool? enabled;
   final TextInputAction? textInputAction;
   final TextEditingController textEditingController;
   final FormFieldValidator<String>? validator;
@@ -16,6 +17,7 @@ class DEmailTextFormField extends StatelessWidget {
       required this.obscureText,
       required this.textEditingController,
       this.validator,
+      this.enabled,
       this.maxLines = 1,
       this.textInputAction})
       : super(key: key);
@@ -25,6 +27,7 @@ class DEmailTextFormField extends StatelessWidget {
     return TextFormField(
         obscureText: this.obscureText,
         validator: this.validator,
+        enabled: this.enabled,
         maxLines: this.maxLines,
         controller: this.textEditingController,
         decoration: InputDecoration(

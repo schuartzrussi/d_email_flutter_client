@@ -15,9 +15,8 @@ class WriteEmailBloc extends Bloc<SendEmailEvent, WriteEmailState> {
     yield state.copyWith(loading: true);
 
     try {
-      await this
-          .emailRepository
-          .sendEmail(event.user, event.to, event.subject, event.body);
+      await this.emailRepository.sendEmail(
+          event.responseTo, event.user, event.to, event.subject, event.body);
 
       yield state.copyWith(success: true, loading: false, error: null);
     } catch (e, s) {

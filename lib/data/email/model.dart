@@ -1,17 +1,41 @@
-import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
-class Email extends Equatable {
+part 'model.g.dart';
+
+@HiveType(typeId: 1)
+class Email {
+  @HiveField(0)
   final String? creator;
+
+  @HiveField(1)
   final String id;
+
+  @HiveField(2)
   final String from;
+
+  @HiveField(3)
   final List<String> to;
+
+  @HiveField(4)
   final String subject;
+
+  @HiveField(5)
   final String body;
+
+  @HiveField(6)
   final DateTime sendedAt;
-  Email? previous;
+
+  @HiveField(7)
+  String? previousID;
+
+  @HiveField(8)
   final String decryptionKey;
+
+  @HiveField(9)
   final String decryptionIV;
+
+  Email? previous;
 
   Email(
       {this.creator,
@@ -22,21 +46,9 @@ class Email extends Equatable {
       required this.body,
       required this.sendedAt,
       required this.decryptionKey,
-      required this.decryptionIV});
-
-  @override
-  List<Object?> get props => [
-        this.creator,
-        this.id,
-        this.from,
-        this.to,
-        this.subject,
-        this.body,
-        this.sendedAt,
-        this.previous,
-        this.decryptionKey,
-        this.decryptionIV
-      ];
+      required this.decryptionIV,
+      this.previousID,
+      this.previous});
 
   String getFormattedSendedAt() {
     return DateFormat('dd/MM/yyyy hh:mm:ss').format(this.sendedAt);
