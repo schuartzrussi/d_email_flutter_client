@@ -20,8 +20,7 @@ const Email$json = const {
     const {'1': 'senderAddressVersion', '3': 6, '4': 1, '5': 4, '10': 'senderAddressVersion'},
     const {'1': 'subject', '3': 7, '4': 1, '5': 9, '10': 'subject'},
     const {'1': 'body', '3': 8, '4': 1, '5': 9, '10': 'body'},
-    const {'1': 'attachments', '3': 9, '4': 3, '5': 9, '10': 'attachments'},
-    const {'1': 'replyTo', '3': 10, '4': 1, '5': 9, '10': 'replyTo'},
+    const {'1': 'replyTo', '3': 9, '4': 1, '5': 9, '10': 'replyTo'},
     const {'1': 'trackIds', '3': 11, '4': 3, '5': 9, '10': 'trackIds'},
     const {'1': 'sendedAt', '3': 12, '4': 1, '5': 9, '10': 'sendedAt'},
     const {'1': 'decryptionKeys', '3': 13, '4': 3, '5': 9, '10': 'decryptionKeys'},
@@ -30,4 +29,4 @@ const Email$json = const {
 };
 
 /// Descriptor for `Email`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List emailDescriptor = $convert.base64Decode('CgVFbWFpbBIYCgdjcmVhdG9yGAEgASgJUgdjcmVhdG9yEg4KAmlkGAIgASgJUgJpZBISCgRmcm9tGAMgASgJUgRmcm9tEg4KAnRvGAQgASgJUgJ0bxIoCg9zZW5kZXJTaWduYXR1cmUYBSABKAlSD3NlbmRlclNpZ25hdHVyZRIyChRzZW5kZXJBZGRyZXNzVmVyc2lvbhgGIAEoBFIUc2VuZGVyQWRkcmVzc1ZlcnNpb24SGAoHc3ViamVjdBgHIAEoCVIHc3ViamVjdBISCgRib2R5GAggASgJUgRib2R5EiAKC2F0dGFjaG1lbnRzGAkgAygJUgthdHRhY2htZW50cxIYCgdyZXBseVRvGAogASgJUgdyZXBseVRvEhoKCHRyYWNrSWRzGAsgAygJUgh0cmFja0lkcxIaCghzZW5kZWRBdBgMIAEoCVIIc2VuZGVkQXQSJgoOZGVjcnlwdGlvbktleXMYDSADKAlSDmRlY3J5cHRpb25LZXlzEjQKFXByZXZpb3VzRGVjcnlwdGlvbktleRgOIAEoCVIVcHJldmlvdXNEZWNyeXB0aW9uS2V5');
+final $typed_data.Uint8List emailDescriptor = $convert.base64Decode('CgVFbWFpbBIYCgdjcmVhdG9yGAEgASgJUgdjcmVhdG9yEg4KAmlkGAIgASgJUgJpZBISCgRmcm9tGAMgASgJUgRmcm9tEg4KAnRvGAQgASgJUgJ0bxIoCg9zZW5kZXJTaWduYXR1cmUYBSABKAlSD3NlbmRlclNpZ25hdHVyZRIyChRzZW5kZXJBZGRyZXNzVmVyc2lvbhgGIAEoBFIUc2VuZGVyQWRkcmVzc1ZlcnNpb24SGAoHc3ViamVjdBgHIAEoCVIHc3ViamVjdBISCgRib2R5GAggASgJUgRib2R5EhgKB3JlcGx5VG8YCSABKAlSB3JlcGx5VG8SGgoIdHJhY2tJZHMYCyADKAlSCHRyYWNrSWRzEhoKCHNlbmRlZEF0GAwgASgJUghzZW5kZWRBdBImCg5kZWNyeXB0aW9uS2V5cxgNIAMoCVIOZGVjcnlwdGlvbktleXMSNAoVcHJldmlvdXNEZWNyeXB0aW9uS2V5GA4gASgJUhVwcmV2aW91c0RlY3J5cHRpb25LZXk=');

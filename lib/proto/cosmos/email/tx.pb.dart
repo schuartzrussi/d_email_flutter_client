@@ -19,12 +19,11 @@ class MsgCreateEmail extends $pb.GeneratedMessage {
     ..a<$fixnum.Int64>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderAddressVersion', $pb.PbFieldType.OU6, protoName: 'senderAddressVersion', defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'subject')
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'body')
-    ..pPS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'attachments')
-    ..aOS(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'replyTo', protoName: 'replyTo')
-    ..pPS(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'trackIds', protoName: 'trackIds')
-    ..aOS(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sendedAt', protoName: 'sendedAt')
-    ..pPS(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'decryptionKeys', protoName: 'decryptionKeys')
-    ..aOS(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'previousDecryptionKey', protoName: 'previousDecryptionKey')
+    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'replyTo', protoName: 'replyTo')
+    ..pPS(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'trackIds', protoName: 'trackIds')
+    ..aOS(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sendedAt', protoName: 'sendedAt')
+    ..pPS(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'decryptionKeys', protoName: 'decryptionKeys')
+    ..aOS(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'previousDecryptionKey', protoName: 'previousDecryptionKey')
     ..hasRequiredFields = false
   ;
 
@@ -37,7 +36,6 @@ class MsgCreateEmail extends $pb.GeneratedMessage {
     $fixnum.Int64? senderAddressVersion,
     $core.String? subject,
     $core.String? body,
-    $core.Iterable<$core.String>? attachments,
     $core.String? replyTo,
     $core.Iterable<$core.String>? trackIds,
     $core.String? sendedAt,
@@ -65,9 +63,6 @@ class MsgCreateEmail extends $pb.GeneratedMessage {
     }
     if (body != null) {
       _result.body = body;
-    }
-    if (attachments != null) {
-      _result.attachments.addAll(attachments);
     }
     if (replyTo != null) {
       _result.replyTo = replyTo;
@@ -171,40 +166,37 @@ class MsgCreateEmail extends $pb.GeneratedMessage {
   void clearBody() => clearField(7);
 
   @$pb.TagNumber(8)
-  $core.List<$core.String> get attachments => $_getList(7);
+  $core.String get replyTo => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set replyTo($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasReplyTo() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearReplyTo() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.String get replyTo => $_getSZ(8);
-  @$pb.TagNumber(9)
-  set replyTo($core.String v) { $_setString(8, v); }
-  @$pb.TagNumber(9)
-  $core.bool hasReplyTo() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearReplyTo() => clearField(9);
+  $core.List<$core.String> get trackIds => $_getList(8);
 
   @$pb.TagNumber(10)
-  $core.List<$core.String> get trackIds => $_getList(9);
+  $core.String get sendedAt => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set sendedAt($core.String v) { $_setString(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasSendedAt() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearSendedAt() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.String get sendedAt => $_getSZ(10);
-  @$pb.TagNumber(11)
-  set sendedAt($core.String v) { $_setString(10, v); }
-  @$pb.TagNumber(11)
-  $core.bool hasSendedAt() => $_has(10);
-  @$pb.TagNumber(11)
-  void clearSendedAt() => clearField(11);
+  $core.List<$core.String> get decryptionKeys => $_getList(10);
 
   @$pb.TagNumber(12)
-  $core.List<$core.String> get decryptionKeys => $_getList(11);
-
-  @$pb.TagNumber(13)
-  $core.String get previousDecryptionKey => $_getSZ(12);
-  @$pb.TagNumber(13)
-  set previousDecryptionKey($core.String v) { $_setString(12, v); }
-  @$pb.TagNumber(13)
-  $core.bool hasPreviousDecryptionKey() => $_has(12);
-  @$pb.TagNumber(13)
-  void clearPreviousDecryptionKey() => clearField(13);
+  $core.String get previousDecryptionKey => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set previousDecryptionKey($core.String v) { $_setString(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasPreviousDecryptionKey() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearPreviousDecryptionKey() => clearField(12);
 }
 
 class MsgCreateEmailResponse extends $pb.GeneratedMessage {

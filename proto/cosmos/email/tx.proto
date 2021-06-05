@@ -16,12 +16,11 @@ message MsgCreateEmail {
   uint64 senderAddressVersion = 5;
   string subject = 6;
   string body = 7;
-  repeated string attachments = 8;
-  string replyTo = 9;
-  repeated string trackIds = 10;
-  string sendedAt = 11;
-  repeated string decryptionKeys = 12;
-  string previousDecryptionKey = 13;
+  string replyTo = 8;
+  repeated string trackIds = 9;
+  string sendedAt = 10;
+  repeated string decryptionKeys = 11;
+  string previousDecryptionKey = 12;
 }
 
 message MsgCreateEmailResponse {

@@ -13,21 +13,43 @@ class ViewEmailPage extends StatelessWidget {
       ),
       body: SafeArea(
         minimum: const EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
           children: [
-            Container(
-              constraints: BoxConstraints(maxWidth: 500, maxHeight: 700),
-              child: SingleChildScrollView(
-                child: Column(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
                   children: [
-                    Text("De: ${email.from}"),
-                    Text("Para: ${email.to.join(', ')}"),
-                    Text(email.body)
+                    Row(
+                      children: [
+                        Container(
+                          constraints:
+                              BoxConstraints(maxWidth: 500, maxHeight: 700),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Text("De: ${email.from}"),
+                                Text("Para: ${email.to.join(', ')}"),
+                                Text(email.body)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {}, child: Text("Responder")),
+                        ElevatedButton(
+                            onPressed: () {},
+                            child: Text("Responder as todos")),
+                      ],
+                    )
                   ],
                 ),
-              ),
-            )
+              ],
+            ),
           ],
         ),
       ),
