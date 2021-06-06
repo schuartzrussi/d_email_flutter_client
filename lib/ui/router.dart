@@ -1,10 +1,11 @@
 import 'package:d_email_flutter_client/data/email/repository.dart';
-import 'package:d_email_flutter_client/ipfs_client/service/ipfs.dart';
+import 'package:d_email_flutter_client/data/wallet/repository.dart';
 import 'package:d_email_flutter_client/ui/pages/inbox/page.dart';
 import 'package:d_email_flutter_client/ui/pages/login/page.dart';
 import 'package:d_email_flutter_client/ui/pages/sent/page.dart';
 import 'package:d_email_flutter_client/ui/pages/signup/page.dart';
 import 'package:d_email_flutter_client/ui/pages/view_email/page.dart';
+import 'package:d_email_flutter_client/ui/pages/wallet/page.dart';
 import 'package:d_email_flutter_client/ui/pages/write_email/page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,12 @@ class AppRouter {
   static const String VIEW_EMAIL_PAGE_ROUTE = "/view";
   static const String INBOX_PAGE_ROUTE = "/inbox";
   static const String SENT_PAGE_ROUTE = "/sent";
+  static const String WALLET_PAGE_ROUTE = "/wallet";
 
   final EmailRepository emailRepository;
+  final WalletRepository walletRepository;
 
-  AppRouter(this.emailRepository);
+  AppRouter(this.emailRepository, this.walletRepository);
 
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -54,6 +57,13 @@ class AppRouter {
         return MaterialPageRoute(
             settings: settings, builder: (_) => ViewEmailPage());
 
+      case WALLET_PAGE_ROUTE:
+        return PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                RepositoryProvider.value(
+                    value: this.walletRepository, child: WalletPage()),
+            transitionDuration: Duration(seconds: 0));
+
       default:
         return null;
     }
@@ -61,5 +71,6 @@ class AppRouter {
 
   void dispose() {
     this.emailRepository.dispose();
+    this.walletRepository.dispose();
   }
 }

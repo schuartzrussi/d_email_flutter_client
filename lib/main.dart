@@ -1,6 +1,7 @@
 import 'package:alan/alan.dart';
 import 'package:d_email_flutter_client/data/email/repository.dart';
 import 'package:d_email_flutter_client/data/user/repository.dart';
+import 'package:d_email_flutter_client/data/wallet/repository.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -32,5 +33,10 @@ void main() async {
   UserRepository userRepository = UserRepository(userBox, networkInfo);
   EmailRepository emailRepository =
       EmailRepository(networkInfo, ipfs, emailBox, flagsBox);
-  runApp(App(userRepository: userRepository, emailRepository: emailRepository));
+  WalletRepository walletRepository = WalletRepository(networkInfo);
+
+  runApp(App(
+      userRepository: userRepository,
+      emailRepository: emailRepository,
+      walletRepository: walletRepository));
 }

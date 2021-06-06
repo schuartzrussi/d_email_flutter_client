@@ -2,6 +2,7 @@ import 'package:d_email_flutter_client/bloc/auth/bloc.dart';
 import 'package:d_email_flutter_client/bloc/auth/state.dart';
 import 'package:d_email_flutter_client/data/email/repository.dart';
 import 'package:d_email_flutter_client/data/user/repository.dart';
+import 'package:d_email_flutter_client/data/wallet/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +12,13 @@ import 'router.dart';
 class App extends StatelessWidget {
   final UserRepository userRepository;
   final EmailRepository emailRepository;
+  final WalletRepository walletRepository;
 
   const App(
-      {Key? key, required this.userRepository, required this.emailRepository})
+      {Key? key,
+      required this.userRepository,
+      required this.emailRepository,
+      required this.walletRepository})
       : super(key: key);
 
   @override
@@ -26,7 +31,8 @@ class App extends StatelessWidget {
                 create: (_) => AuthBloc(this.userRepository),
                 child: AppView(
                     userRepository: this.userRepository,
-                    emailRepository: this.emailRepository));
+                    emailRepository: this.emailRepository,
+                    walletRepository: this.walletRepository));
           },
         ));
   }
@@ -35,13 +41,18 @@ class App extends StatelessWidget {
 class AppView extends StatefulWidget {
   final UserRepository userRepository;
   final EmailRepository emailRepository;
+  final WalletRepository walletRepository;
 
   const AppView(
-      {Key? key, required this.userRepository, required this.emailRepository})
+      {Key? key,
+      required this.userRepository,
+      required this.emailRepository,
+      required this.walletRepository})
       : super(key: key);
 
   @override
-  _AppViewState createState() => _AppViewState(AppRouter(this.emailRepository));
+  _AppViewState createState() =>
+      _AppViewState(AppRouter(this.emailRepository, this.walletRepository));
 }
 
 class _AppViewState extends State<AppView> {

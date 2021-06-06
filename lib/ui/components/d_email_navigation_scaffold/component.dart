@@ -30,6 +30,11 @@ class DEmailNavigationScaffold extends StatelessWidget {
       route: AppRouter.SENT_PAGE_ROUTE,
       icon: Icons.send,
     ),
+    MenuItem(
+      title: 'Carteira',
+      route: AppRouter.WALLET_PAGE_ROUTE,
+      icon: Icons.account_balance_wallet_rounded,
+    ),
   ];
 
   final List<MenuItem> _adminMenuItems = const [
