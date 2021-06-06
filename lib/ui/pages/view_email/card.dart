@@ -54,15 +54,15 @@ class EmailCard extends StatelessWidget {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("De: ${email.from}"),
-                  Text("Para: ${email.to.join(', ')}"),
-                  Text("Enviado em: ${email.getFormattedSendedAt()}")
+                  SelectableText("De: ${email.from}"),
+                  SelectableText("Para: ${email.to.join(', ')}"),
+                  SelectableText("Enviado em: ${email.getFormattedSendedAt()}")
                 ],
               ),
             ),
             Divider(),
             const SizedBox(height: 12),
-            Text(email.body),
+            SelectableText(email.body),
             Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

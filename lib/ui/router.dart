@@ -1,5 +1,6 @@
 import 'package:d_email_flutter_client/data/email/repository.dart';
 import 'package:d_email_flutter_client/data/wallet/repository.dart';
+import 'package:d_email_flutter_client/ui/pages/generate_wallet/page.dart';
 import 'package:d_email_flutter_client/ui/pages/inbox/page.dart';
 import 'package:d_email_flutter_client/ui/pages/login/page.dart';
 import 'package:d_email_flutter_client/ui/pages/sent/page.dart';
@@ -19,6 +20,7 @@ class AppRouter {
   static const String INBOX_PAGE_ROUTE = "/inbox";
   static const String SENT_PAGE_ROUTE = "/sent";
   static const String WALLET_PAGE_ROUTE = "/wallet";
+  static const String GENERATE_WALLET_PAGE_ROUTE = "/generate-wallet";
 
   final EmailRepository emailRepository;
   final WalletRepository walletRepository;
@@ -64,13 +66,14 @@ class AppRouter {
                     value: this.walletRepository, child: WalletPage()),
             transitionDuration: Duration(seconds: 0));
 
+      case GENERATE_WALLET_PAGE_ROUTE:
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => RepositoryProvider.value(
+                value: this.walletRepository, child: GenerateWalletPage()));
+
       default:
         return null;
     }
-  }
-
-  void dispose() {
-    this.emailRepository.dispose();
-    this.walletRepository.dispose();
   }
 }

@@ -8,6 +8,7 @@ import 'package:d_email_flutter_client/ui/components/d_email_snackbar/component.
 import 'package:d_email_flutter_client/ui/components/d_email_text_form_field/component.dart';
 import 'package:d_email_flutter_client/ui/form_validator/email.dart';
 import 'package:d_email_flutter_client/ui/form_validator/required_field.dart';
+import 'package:d_email_flutter_client/ui/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -75,7 +76,7 @@ class _SignupPageFormState extends State<SignupPageForm> {
                               EmailFormValidator.validateEmail(val)),
                       SizedBox(height: 25.0),
                       DEmailTextFormField(
-                          label: "Mnemonic",
+                          label: "Mnemônico",
                           textInputType: TextInputType.text,
                           obscureText: false,
                           textEditingController: this._mnemonicController,
@@ -94,7 +95,32 @@ class _SignupPageFormState extends State<SignupPageForm> {
                       SizedBox(
                         height: 15.0,
                       ),
-                      _getSubmitButton(context),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              TextButton(
+                                  child: Text("Login"),
+                                  onPressed: () {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        AppRouter.LOGIN_PAGE_ROUTE,
+                                        (Route<dynamic> route) => false);
+                                  }),
+                              TextButton(
+                                  child: Text("Gerar mnemônico"),
+                                  onPressed: () {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        AppRouter.GENERATE_WALLET_PAGE_ROUTE,
+                                        (Route<dynamic> route) => false);
+                                  }),
+                            ],
+                          ),
+                          _getSubmitButton(context),
+                        ],
+                      ),
                       SizedBox(
                         height: 15.0,
                       ),

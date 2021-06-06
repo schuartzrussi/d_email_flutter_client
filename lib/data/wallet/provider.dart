@@ -1,8 +1,10 @@
-import 'package:alan/alan.dart';
+import 'package:alan/alan.dart' as alanLib;
 import 'package:alan/wallet/network_info.dart';
 import 'package:alan/proto/cosmos/bank/v1beta1/export.dart' as bank;
 import 'package:d_email_flutter_client/data/core/base.dart';
 import 'package:d_email_flutter_client/data/user/model.dart';
+
+import 'model.dart';
 
 class DEmailWalletProvider extends BaseDEmailProvider {
   bank.QueryClient? queryClient;
@@ -13,8 +15,14 @@ class DEmailWalletProvider extends BaseDEmailProvider {
     this.queryClient = bank.QueryClient(channel);
   }
 
+  Future<Wallet> generateNewWallet() async {
+    var mnemonic = alanLib.Bip39.generateMnemonic(strength: 256);
+    final wallet = alanLib.Wallet.derive(mnemonic, this.demailNetworkInfo);
+    return Wallet(wallet.bech32Address, mnemonic.join(' '));
+  }
+
   Future<int> getBalance(User user) async {
-    Wallet wallet = generateWallet(user.mnemonic);
+    alanLib.Wallet wallet = generateWallet(user.mnemonic);
 
     final response =
         await queryClient!.balance(bank.QueryBalanceRequest.create()
@@ -25,14 +33,14 @@ class DEmailWalletProvider extends BaseDEmailProvider {
   }
 
   Future<void> sendCoins(User user, String to, int amount) async {
-    Wallet wallet = generateWallet(user.mnemonic);
+    alanLib.Wallet wallet = generateWallet(user.mnemonic);
 
     final message = bank.MsgSend.create()
       ..fromAddress = wallet.bech32Address
       ..toAddress = to;
 
     message.amount.add(
-      Coin.create()
+      alanLib.Coin.create()
         ..denom = 'token'
         ..amount = amount.toString(),
     );

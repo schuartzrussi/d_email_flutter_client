@@ -95,6 +95,7 @@ class _AppViewState extends State<AppView> {
   void dispose() {
     this.widget.userRepository.dispose();
     this.widget.emailRepository.dispose();
+    this.widget.walletRepository.dispose();
     super.dispose();
   }
 }
