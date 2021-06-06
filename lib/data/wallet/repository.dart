@@ -17,6 +17,16 @@ class WalletRepository extends Repository {
     return await this.walletProvider!.generateNewWallet();
   }
 
+  Future<List<CoinTransaction>> getAllCoinTransactions(User user) async {
+    List<CoinTransaction> received =
+        await this.walletProvider!.getReceivedCoinTransactions(user);
+
+    List<CoinTransaction> sended =
+        await this.walletProvider!.getSendedCoinTransactions(user);
+
+    return [...received, ...sended];
+  }
+
   Future<int> getBalance(User user) async {
     return await this.walletProvider!.getBalance(user);
   }

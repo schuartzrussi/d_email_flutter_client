@@ -1,4 +1,5 @@
 import 'package:d_email_flutter_client/bloc/wallet/state.dart';
+import 'package:d_email_flutter_client/data/wallet/model.dart';
 import 'package:d_email_flutter_client/data/wallet/repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +25,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
     try {
       int balance = await this.walletRepository.getBalance(event.user);
-      yield state.copyWith(loading: false, error: null, total: balance);
+      List<CoinTransaction> coinTransactions =
+          await this.walletRepository.getAllCoinTransactions(event.user);
+
+      yield state.copyWith(
+          loading: false,
+          error: null,
+          total: balance,
+          coinTransactions: coinTransactions);
     } catch (e, s) {
       print("StackTrace $s");
       yield state.copyWith(error: "Ocorreu um erro inesperado", loading: false);

@@ -3,9 +3,11 @@ import 'package:d_email_flutter_client/bloc/auth/state.dart';
 import 'package:d_email_flutter_client/bloc/wallet/bloc.dart';
 import 'package:d_email_flutter_client/bloc/wallet/event.dart';
 import 'package:d_email_flutter_client/bloc/wallet/state.dart';
+import 'package:d_email_flutter_client/data/wallet/model.dart';
 import 'package:d_email_flutter_client/ui/components/d_email_navigation_scaffold/component.dart';
 import 'package:d_email_flutter_client/ui/components/d_email_progress_dialog/component.dart';
 import 'package:d_email_flutter_client/ui/components/d_email_snackbar/component.dart';
+import 'package:d_email_flutter_client/ui/pages/wallet/coin_transactions_list.dart';
 import 'package:d_email_flutter_client/ui/pages/wallet/form.dart';
 import 'package:d_email_flutter_client/ui/router.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +64,7 @@ class _WalletPageScaffoldState extends State<WalletPageScaffold> {
             return Center(
               child: SingleChildScrollView(
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: 500),
+                  constraints: BoxConstraints(maxWidth: 800),
                   child: Card(
                     color: Color(0xFFEEEEEE),
                     child: Padding(
@@ -76,6 +78,8 @@ class _WalletPageScaffoldState extends State<WalletPageScaffold> {
                             ),
                             Divider(),
                             SendCoinForm(totalBalance: totalBalance),
+                            Divider(),
+                            CoinTransactionsList(state.coinTransactions)
                           ],
                         )),
                   ),

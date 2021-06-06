@@ -10,12 +10,17 @@ class Wallet extends Equatable {
   List<Object?> get props => [this.address, this.mnemonic];
 }
 
-class CoinTransaction extends Equatable {
-  final String to;
-  final String amount;
+enum CoinTransactionType { input, output }
 
-  CoinTransaction(this.to, this.amount);
+class CoinTransaction extends Equatable {
+  final String from;
+  final String to;
+  final int amount;
+  final CoinTransactionType transactionType;
+
+  CoinTransaction(this.from, this.to, this.amount, this.transactionType);
 
   @override
-  List<Object?> get props => [this.to, this.amount];
+  List<Object?> get props =>
+      [this.from, this.to, this.amount, this.transactionType];
 }
