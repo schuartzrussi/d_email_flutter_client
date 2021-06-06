@@ -64,7 +64,6 @@ class _WalletPageScaffoldState extends State<WalletPageScaffold> {
             return Center(
               child: SingleChildScrollView(
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: 800),
                   child: Card(
                     color: Color(0xFFEEEEEE),
                     child: Padding(

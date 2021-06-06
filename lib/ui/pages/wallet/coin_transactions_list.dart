@@ -16,28 +16,25 @@ class CoinTransactionsList extends StatelessWidget {
     List<DataRow> rows = [];
     coinTransactions!.forEach((coinTransaction) {
       rows.add(DataRow(cells: [
-        DataCell(Text(coinTransaction.amount.toString())),
-        DataCell(Text(
+        DataCell(SelectableText(coinTransaction.amount.toString())),
+        DataCell(SelectableText(
             coinTransaction.transactionType == CoinTransactionType.input
                 ? "Entrada"
                 : "Saida")),
-        DataCell(Text(coinTransaction.from)),
-        DataCell(Text(coinTransaction.to)),
+        DataCell(SelectableText(coinTransaction.from)),
+        DataCell(SelectableText(coinTransaction.to)),
       ]));
     });
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Container(
-        child: DataTable(
-            columnSpacing: 10,
-            columns: [
-              DataColumn(label: Text('Valor')),
-              DataColumn(label: Text('Tipo')),
-              DataColumn(label: Text('De')),
-              DataColumn(label: Text('Para')),
-            ],
-            rows: rows),
+        child: DataTable(columns: [
+          DataColumn(label: Text('Valor')),
+          DataColumn(label: Text('Tipo')),
+          DataColumn(label: Text('De')),
+          DataColumn(label: Text('Para')),
+        ], rows: rows),
       ),
     );
 
