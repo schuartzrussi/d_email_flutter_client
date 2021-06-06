@@ -23,6 +23,7 @@ class InboxBloc extends Bloc<InboxEvent, InboxState> {
     try {
       List<Email> emails =
           await this.emailRepository.findAllUserEmails(event.user);
+      emails.sort((a, b) => b.sendedAt.compareTo(a.sendedAt));
 
       yield state.copyWith(emails: emails, loading: false, fetchError: null);
     } catch (e, s) {

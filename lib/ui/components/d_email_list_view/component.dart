@@ -44,6 +44,7 @@ class _Card extends StatelessWidget {
             subtitle:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text("De: ${email.from}"),
+              Text("Para: ${email.to.join(', ')}"),
               Text("Enviado em: ${email.getFormattedSendedAt()}"),
             ])),
       ),

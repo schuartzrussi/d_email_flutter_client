@@ -22,7 +22,8 @@ class SentBloc extends Bloc<SentEvent, SentState> {
 
     try {
       List<Email> emails =
-          await this.emailRepository.findAllUserEmails(event.user);
+          await this.emailRepository.findAllUserSentEmails(event.user);
+      emails.sort((a, b) => b.sendedAt.compareTo(a.sendedAt));
 
       yield state.copyWith(emails: emails, loading: false, fetchError: null);
     } catch (e, s) {

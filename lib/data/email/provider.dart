@@ -118,7 +118,8 @@ class DEmailEmailProvider extends BaseDEmailProvider {
         previous: replyTo);
   }
 
-  Future<List<Email>> getAllUserEmails(User user) async {
+  Future<List<Email>> getAllUserEmails(
+      User user, Map<String, Email> emailCache) async {
     List<Email> result = [];
 
     final response = await this.queryClient!.emailAll(QueryAllEmailRequest());
@@ -126,7 +127,6 @@ class DEmailEmailProvider extends BaseDEmailProvider {
       RSAImpl rsaImpl = RSAImpl();
       rsaImpl.setKeyPair(user.rsaPublicKey, user.rsaPrivateKey);
 
-      Map<String, Email> emailCache = {};
       Map<String, emailProto.Email> protoEmailCache = {};
 
       response.email.forEach((element) {
@@ -136,13 +136,17 @@ class DEmailEmailProvider extends BaseDEmailProvider {
       for (int i = 0; i < response.email.length; i++) {
         try {
           var emailProto = response.email[i];
-          var trackIDs = emailProto.trackIds;
-          if (trackIDs.contains(user.trackID.toString())) {
-            Email? email = await decryptProtoEmail(user.email, rsaImpl,
-                emailProto, null, emailCache, protoEmailCache);
-            if (email != null) {
-              result.add(email);
-              emailCache[email.id] = email;
+          if (emailCache.containsKey(emailProto.id)) {
+            result.add(emailCache[emailProto.id]!);
+          } else {
+            var trackIDs = emailProto.trackIds;
+            if (trackIDs.contains(user.trackID.toString())) {
+              Email? email = await decryptProtoEmail(user.email, rsaImpl,
+                  emailProto, null, emailCache, protoEmailCache);
+              if (email != null) {
+                result.add(email);
+                emailCache[email.id] = email;
+              }
             }
           }
         } catch (e) {
@@ -170,10 +174,6 @@ class DEmailEmailProvider extends BaseDEmailProvider {
     }
 
     String from = aesImpl.decrypt(emailProto.from);
-    if (userEmail == from) {
-      return null;
-    }
-
     String bodyIpfsCid = emailProto.body;
     String subject = aesImpl.decrypt(emailProto.subject);
     List<String> to = aesImpl.decrypt(emailProto.to).split(";");

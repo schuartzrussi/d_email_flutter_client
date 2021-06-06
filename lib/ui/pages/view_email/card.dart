@@ -27,7 +27,9 @@ class EmailCard extends StatelessWidget {
         child: Text("Responder")));
 
     if (this.email.to.length > 1 ||
-        (this.email.to.length == 1 && !this.email.to.contains(user.email))) {
+        (this.email.to.length == 1 &&
+            !this.email.to.contains(user.email) &&
+            this.email.from != user.email)) {
       List<String> to = List<String>.from(this.email.to);
       to.remove(user.email);
 
@@ -53,7 +55,8 @@ class EmailCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("De: ${email.from}"),
-                  Text("Para: ${email.to.join(', ')}")
+                  Text("Para: ${email.to.join(', ')}"),
+                  Text("Enviado em: ${email.getFormattedSendedAt()}")
                 ],
               ),
             ),
