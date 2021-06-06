@@ -72,7 +72,10 @@ class _InboxPageScaffoldState extends State<InboxPageScaffold> {
                 backgroundColor: Theme.of(context).primaryColor,
                 child: Icon(Icons.send),
                 foregroundColor: Colors.white,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(AppRouter.WRITE_EMAIL_PAGE_ROUTE);
+                },
               ),
             )),
       ],

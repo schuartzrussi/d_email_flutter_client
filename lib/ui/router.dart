@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppRouter {
   static const String LOGIN_PAGE_ROUTE = "/login";
   static const String SIGNUP_PAGE_ROUTE = "/signup";
-  static const String HOME_PAGE_ROUTE = "/home";
   static const String WRITE_EMAIL_PAGE_ROUTE = "/write";
   static const String VIEW_EMAIL_PAGE_ROUTE = "/view";
   static const String INBOX_PAGE_ROUTE = "/inbox";
@@ -30,12 +29,6 @@ class AppRouter {
 
       case SIGNUP_PAGE_ROUTE:
         return MaterialPageRoute(builder: (_) => SignupPage());
-
-      /*
-      case HOME_PAGE_ROUTE:
-        return MaterialPageRoute(
-            builder: (_) => RepositoryProvider.value(
-                value: this.emailRepository, child: HomePage()));*/
 
       case INBOX_PAGE_ROUTE:
         return PageRouteBuilder(

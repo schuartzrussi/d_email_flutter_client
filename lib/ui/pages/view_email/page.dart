@@ -21,18 +21,12 @@ class ViewEmailPage extends StatelessWidget {
       ),
       body: SafeArea(
         minimum: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    constraints: BoxConstraints(maxWidth: 500, maxHeight: 700),
-                    child:
-                        SingleChildScrollView(child: Column(children: cards))),
-              ],
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+                constraints: BoxConstraints(maxWidth: 500, maxHeight: 700),
+                child: SingleChildScrollView(child: Column(children: cards))),
+          ),
         ),
       ),
     );

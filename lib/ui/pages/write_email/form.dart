@@ -54,8 +54,7 @@ class _WriteEmailFormState extends State<WriteEmailForm> {
               if (state.error != null) {
                 DEmailSnackBar.show(context, state.error!, 3);
               } else if (state.success) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    AppRouter.HOME_PAGE_ROUTE, (route) => false);
+                Navigator.of(context).pop();
               }
             }
           },

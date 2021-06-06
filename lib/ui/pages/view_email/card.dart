@@ -2,6 +2,7 @@ import 'package:d_email_flutter_client/bloc/auth/bloc.dart';
 import 'package:d_email_flutter_client/bloc/auth/state.dart';
 import 'package:d_email_flutter_client/data/email/model.dart';
 import 'package:d_email_flutter_client/data/user/model.dart';
+import 'package:d_email_flutter_client/ui/components/d_email_avatar/component.dart';
 import 'package:d_email_flutter_client/ui/pages/write_email/arguments.dart';
 import 'package:d_email_flutter_client/ui/router.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class EmailCard extends StatelessWidget {
         (BlocProvider.of<AuthBloc>(context).state as AuthenticatedUserState)
             .user;
 
-    List<ElevatedButton> actions = [];
+    List<Widget> actions = [];
     actions.add(ElevatedButton(
         onPressed: () {
           onClickReply(context, [email.from]);
@@ -30,6 +31,7 @@ class EmailCard extends StatelessWidget {
       List<String> to = List<String>.from(this.email.to);
       to.remove(user.email);
 
+      actions.add(SizedBox(width: 12));
       actions.add(ElevatedButton(
           onPressed: () {
             onClickReply(context, [email.from, ...to]);
@@ -38,15 +40,35 @@ class EmailCard extends StatelessWidget {
     }
 
     return Card(
+      color: Color(0xFFEEEEEE),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-      children: [
-        Text("Assunto: ${email.subject}"),
-        Text("De: ${email.from}"),
-        Text("Para: ${email.to.join(', ')}"),
-        Text("Conteudo: ${email.body}"),
-        ...actions,
-      ],
-    ));
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ListTile(
+              leading: DEmailAvatar(emailAddress: email.from),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("De: ${email.from}"),
+                  Text("Para: ${email.to.join(', ')}")
+                ],
+              ),
+            ),
+            Divider(),
+            const SizedBox(height: 12),
+            Text(email.body),
+            Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: actions,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void onClickReply(BuildContext context, List<String> to) {
